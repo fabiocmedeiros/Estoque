@@ -22,7 +22,7 @@ public class Main {
             System.out.println("1 - Produto");
             System.out.println("2 - Fornecedor");
             System.out.println("3 - Estoque");
-            System.out.println("0 - SAIR");
+            System.out.println("0 - Sair");
 
             escolhaMenu = sc.nextInt();
 
