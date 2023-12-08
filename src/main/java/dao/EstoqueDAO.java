@@ -1,48 +1,60 @@
-package estoque;
+package dao;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Estoque {
-        private Map<String, Integer> produtos;
+import main.Testes;
+import model.Produto;
 
-        public Estoque() {
-            this.produtos = new HashMap<>();
+public class EstoqueDAO {
+		private static EstoqueDAO estoqueDAO;  
+        private Map<Produto, Integer> produtos = new HashMap<>();
+
+        private EstoqueDAO() {
+        	
+        }
+        
+    	// padrão singleton.
+    	public static EstoqueDAO getInstancia() {
+    		if (estoqueDAO == null) {
+    			estoqueDAO = new EstoqueDAO();
+    		}
+    		return estoqueDAO;
+    	}
+    	
+    	public void atualizarProduto(Produto produto, int novaQuantidade) {
+            produtos.put(produto, novaQuantidade);
+            System.out.println("Estoque de " + produto.getNome() + " atualizado para " + novaQuantidade + " unidades.");
         }
 
-        public void adicionarProduto(String produto, int quantidade) {
+        public void adicionarProduto(Produto produto, int quantidade) {
             if (produtos.containsKey(produto)) {
                 int quantidadeAtual = produtos.get(produto);
                 produtos.put(produto, quantidadeAtual + quantidade);
             } else {
                 produtos.put(produto, quantidade);
             }
-            System.out.println(quantidade + " unidades de " + produto + " foram adicionadas ao estoque.");
+            System.out.println(quantidade + " unidades de " + produto.getNome() + " foram adicionadas ao estoque.\n");
         }
 
-        public void removerProduto(String produto, int quantidade) {
+        public void removerProduto(Produto produto, int quantidade) {
             if (produtos.containsKey(produto)) {
                 int quantidadeAtual = produtos.get(produto);
                 if (quantidadeAtual >= quantidade) {
                     produtos.put(produto, quantidadeAtual - quantidade);
-                    System.out.println(quantidade + " unidades de " + produto + " foram removidas do estoque.");
+                    System.out.println(quantidade + " unidades de " + produto.getNome() + " foram removidas do estoque.");
                 } else {
-                    System.out.println("Quantidade insuficiente de " + produto + " no estoque.");
+                    System.out.println("Quantidade insuficiente de " + produto.getNome() + " no estoque.");
                 }
             } else {
-                System.out.println(produto + " não encontrado no estoque.");
+                System.out.println(produto.getNome() + " não encontrado no estoque.");
             }
-        }
-
-        public void atualizarProduto(String produto, int novaQuantidade) {
-            produtos.put(produto, novaQuantidade);
-            System.out.println("Estoque de " + produto + " atualizado para " + novaQuantidade + " unidades.");
         }
 
         public void listarProdutos() {
             System.out.println("Produtos disponíveis no estoque:");
-            for (Map.Entry<String, Integer> entry : produtos.entrySet()) {
-                System.out.println(entry.getKey() + ": " + entry.getValue() + " unidades");
+            for (Map.Entry<Produto, Integer> entry : produtos.entrySet()) {
+                System.out.println(entry.getKey().getNome() + " : " + entry.getValue() + " unidades");
             }
         }
 }
